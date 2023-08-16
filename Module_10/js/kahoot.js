@@ -1,5 +1,77 @@
-//             node Module_9/kahoot         - запуск через термінал
-//* 1. Що буде виведено в консоль:
+//             node Module_10/kahoot         - запуск через термінал
+
+//? ПАГІНАЦІЯ
+
+//* 1. В якій вкладці інструментів розробника можна переглянути інформацію про HTTP запити:
+
+//?  Network
+//!  Performance
+//!  Application
+//!  Console
+
+//* 2. Як називаєтсья частина URL адреси, виділена кольором:
+//   https://*www.weatherapi.com/my/producer?name=dreame
+
+//!   parameters
+//?   protocol (протокол передачі даних)
+//!   host
+//!   domain
+
+//* 3. Як називаєтсья частина URL, виділена кольором:
+//   https://*  www.weatherapi.com   /my/producer?name=dreame
+
+//!   parameters
+//?   host (сервер?)
+//!   query
+//!   path
+
+//* 4.  Як називаєтсья частина URL, виділена кольором:
+//   https://www.weatherapi.com  //*  /my/producer   ?name=dreame
+
+//!   parameters
+//!   resource
+//!   values
+//?   path (шлях)
+
+//* 5.  Як називаєтсья частина URL, виділена кольором:
+//   https://www.weatherapi.com/my/producer  //* ?name=dreame
+
+//!   search
+//?   parameters (інформація, яку передаємо з фронтенду на сервер)
+//!   resource
+//!   path
+
+//* 6. Що буде виведено в консоль, якщо статус коду відповіді сервера 404?
+
+// fetch("https://my-api23.com")
+//   .then((response) => {
+//     if (response.ok) {
+//       return console.log("Ok");
+//     }
+//     console.log("Not Ok");
+//   })
+//   .catch(() => console.log("Error"));
+
+fetch("https://my-api.com")
+  .then((response) => {
+    console.log("Response status code:", response.status);
+
+    if (response.ok) {
+      return console.log("Ok");
+    }
+    console.log("Not Ok");
+  })
+  .catch((error) => {
+    console.error("Fetch error:", error);
+    console.log("Error");
+  });
+
+//!  "Ok"
+//!  "Not Ok"
+//?  "Error"
+//!  Нічого
+
+//* 7.
 // const promise = new Promise((resolve, reject) => {
 //   reject("Whoops");
 // });
