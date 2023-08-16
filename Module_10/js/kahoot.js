@@ -80,6 +80,12 @@
 //!  DNS
 
 //* 12.
+const getUser = (userId) => {
+  const url = `https://my-api.com/users/${userId}`;
+  fetch(url).then((res) => res.json());
+};
+
+getUser(1).then((user) => console.log(user));
 
 //! --------------------   УРОК 2   --------------------------
 
@@ -135,19 +141,19 @@
 //   })
 //   .catch(() => console.log("Error"));
 
-fetch("https://my-api.com")
-  .then((response) => {
-    console.log("Response status code:", response.status);
+// fetch("https://my-api.com")
+//   .then((response) => {
+//     console.log("Response status code:", response.status);
 
-    if (response.ok) {
-      return console.log("Ok");
-    }
-    console.log("Not Ok");
-  })
-  .catch((error) => {
-    console.error("Fetch error:", error);
-    console.log("Error");
-  });
+//     if (response.ok) {
+//       return console.log("Ok");
+//     }
+//     console.log("Not Ok");
+//   })
+//   .catch((error) => {
+//     console.error("Fetch error:", error);
+//     console.log("Error");
+//   });
 
 //!  "Ok"
 //?  "Not Ok"
