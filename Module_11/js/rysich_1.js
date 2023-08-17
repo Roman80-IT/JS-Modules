@@ -142,10 +142,72 @@
 //*   Наступні ланцюжки - вже за межами ф-ції - на результаті виконання ф-ції\
 //? 1:31:00
 //* тому вказуємо, що ми повертаємо результат 'fetch':
+// function getWeather(city, days) {
+//   const BASE_URL = "http://api.weatherapi.com/v1";
+//   const API_KEY = "ce2cb9b2a3da414bb5b172546231704";
+//   const params = new URLSearchParams({
+//     key: API_KEY,
+//     q: city,
+//     days: days,
+//     lang: "uk",
+//   });
+
+//   return fetch(`${BASE_URL}/forecast.json?${params}`).then((resp) => {
+//     if (!resp.ok) {
+//       throw new Error(resp.statusText);
+//     }
+
+//     return resp.json();
+//   });
+// }
+//* а там де викликалася ф-ція, ми вже пишемо 'then':
+// getWeather("Paris", 5)
+//   .then((data) => console.log(data))
+//   .catch((err) => console.log(err)); //* 'catch' якщо у нас є помилка
+
+//* Якщо все успішно, ми отримаємо обєкт відповіді з бекенда:
+//* current(поточна погода), forecast(прогноз), location(локація)
+//* по суті data = resp.json()
+
+//? 1:35:00
+//* З першого 'then' є два шляхи - або наступний 'then' або 'catch' якщо помилка
+
+//? 1:36:30
+//* Створимо форму в HTML, де користувач зможе вводити дані
+
+//? 1:38:40
+const search = document.querySelector(".js-search");
+const list = document.querySelector(".js-list");
+search.addEventListener("submit", onSearch);
+
+//* Кол-бек ф-ція для обробки:
+function onSearch(evt) {
+  evt.preventDefault(); //* подія "submit" має нативну поведінку тому скидаємо її
+
+  //* Використовуємо деструктуризацію для отримання доступу до елементів форми, які були відправлені користувачем через форму пошуку погоди.
+  //* Деструктуризація - це спосіб витягти окремі значення або властивості з об'єкту чи масиву і присвоїти їх змінним.
+  //* В цьому випадку об'єктом є 'evt.currentTarget.elements', який представляє всі елементи (поля) форми, яка викликала подію "submit".
+  //* 'evt.currentTarget' - це посилання на елемент, на якому спрацювала подія (в нас це форма з класом "js-search").
+  //* .elements - це колекція всіх елементів форми (input, select, textarea і т. д.).
+  //* За допомогою деструктуризації ви витягуєте з цього об'єкту 2 властивості:
+  //*   query - це елемент інпуту, де користувач вводить місто для пошуку погоди.
+  //*   days - це елемент інпуту або селектора, де користувач вибирає к-сть днів для прогнозу погоди.
+  const { query, days } = evt.currentTarget.elements;
+
+  getWeather(query.value, days.value)
+    //? 1:43:00
+    //*   .then((data) => console.log(data))        // КОНСОЛЬ //
+    .then((data) => {
+      console.log("Number of forecast days:", data.forecast.forecastday.length); // КОНСОЛЬ //
+      list.innerHTML = createMarkup(data.forecast.forecastday);
+    })
+    //* Цей другий 'then' віддаємо на ф-цію відмальовки розмітки
+    .catch((err) => console.log(err));
+}
 
 function getWeather(city, days) {
   const BASE_URL = "http://api.weatherapi.com/v1";
-  const API_KEY = "ce2cb9b2a3da414bb5b172546231704";
+  const API_KEY = "99b65d3027dc48f9ace134746231508";
   const params = new URLSearchParams({
     key: API_KEY,
     q: city,
@@ -161,17 +223,29 @@ function getWeather(city, days) {
     return resp.json();
   });
 }
-//* а там де викликалася ф-ція, ми вже пишемо 'then':
-getWeather("Paris", 5)
-  .then((data) => console.log(data))
-  .catch((err) => console.log(err)); //* 'catch' якщо у нас є помилка
 
-//* Якщо все успішно, ми отримаємо обєкт відповіді з бекенда:
-//* current(поточна погода), forecast(прогноз), location(локація)
-//* по суті data = resp.json()
+//? 1:43:00     // Продовження
+function createMarkup(arr) {
+  return arr
+    .map(
+      ({
+        date,
+        day: {
+          avgtemp_c,
+          condition: { text, icon },
+        },
+      }) => `<li>
+    <img src="${icon}" alt="${text}">
+    <p>${text}</p>
+    <h2>${date}</h2>
+    <h3>${avgtemp_c}</h3>
+</li>`
+    )
+    .join("");
+}
 
-//? 1:35:00
-//* З першого 'then' є два шляхи - або наступний 'then' або 'catch' якщо помилка
+//? 1:47:00
+//* Використання Postman
 
-//? 1:36:30
-//* Створимо форму де користувач зможе вводити дані
+//? 1:48:30
+//* Вкладена деструктиризація
